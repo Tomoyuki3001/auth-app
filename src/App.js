@@ -1,5 +1,7 @@
+import Signup from "./pages/Signup";
+
 function App() {
-  return <div>Hello</div>;
+  return <Signup />;
 }
 
 export default App;

@@ -7,24 +7,32 @@ import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isValidEmail, setIsValidEmail] = useState(true);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log("user credential", userCredential);
-      const user = userCredential.user;
-      localStorage.setItem("token", user.accessToken);
-      localStorage.setItem("user", JSON.stringify(user));
-      navigate("/");
-    } catch (error) {}
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = emailRegex.test(email);
+    setIsValidEmail(isValid);
+
+    if (!isValid) {
+      alert("Please enter a valid email address.");
+    } else {
+      try {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+        localStorage.setItem("token", user.accessToken);
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/");
+      } catch (error) {}
+    }
   };
 
   return (
@@ -55,8 +63,7 @@ const Login = () => {
         Please create your account.{" "}
         <Link to="/signup">Create your account</Link>
       </p>
-      <p>Test email: test@gmail.com</p>
-      <p>Test password: 123456</p>
+      <p>Demo: test@gmail.com / 123456</p>
     </div>
   );
 };

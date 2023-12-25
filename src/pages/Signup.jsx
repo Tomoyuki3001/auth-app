@@ -7,24 +7,28 @@ import { Link, useNavigate } from "react-router-dom";
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log("user credential", userCredential);
-      const user = userCredential.user;
-      localStorage.setItem("token", user.accessToken);
-      localStorage.setItem("user", JSON.stringify(user));
-      navigate("/");
-    } catch (error) {}
+    if (password === rePassword) {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+        localStorage.setItem("token", user.accessToken);
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/");
+      } catch (error) {}
+    } else {
+      alert("Please type same password");
+    }
   };
 
   return (
@@ -45,6 +49,14 @@ const Signup = () => {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="signup-pw"
+        />
+        <input
+          type="password"
+          placeholder="Password again"
+          required
+          value={rePassword}
+          onChange={(e) => setRePassword(e.target.value)}
           className="signup-pw"
         />
         <button type="submit" className="signup-button">

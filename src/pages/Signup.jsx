@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../style/signup.css";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -52,7 +52,7 @@ const Signup = () => {
         </button>
       </form>
       <p>
-        {/* If you already have an account. <Link to="/login">Log in</Link> */}
+        If you already have an account. <Link to="/login">Log in</Link>
       </p>
     </div>
   );

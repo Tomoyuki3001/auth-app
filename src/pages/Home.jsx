@@ -15,7 +15,9 @@ const Home = () => {
   return (
     <div>
       <h1>Hello! This is a home page of this auth app!</h1>
-      <button onClick={handleLogout}>Log out</button>
+      <button onClick={handleLogout} className="signup-button">
+        Log out
+      </button>
     </div>
   );
 };

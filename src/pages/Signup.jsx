@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "../style/signup.css";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -16,15 +19,30 @@ const Signup = () => {
 
     if (password === rePassword) {
       try {
-        const userCredential = await createUserWithEmailAndPassword(
+        const userCredential = await signInWithEmailAndPassword(
           auth,
           email,
           password
         );
         const user = userCredential.user;
-        localStorage.setItem("token", user.accessToken);
-        localStorage.setItem("user", JSON.stringify(user));
-        navigate("/");
+        if (email === user.email) {
+          alert("This email addres already exists.");
+          setEmail("");
+          setPassword("");
+          setRePassword("");
+        } else {
+          try {
+            const userCredential = await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+            const user = userCredential.user;
+            localStorage.setItem("token", user.accessToken);
+            localStorage.setItem("user", JSON.stringify(user));
+            navigate("/");
+          } catch (error) {}
+        }
       } catch (error) {}
     } else {
       alert("Please type same password");

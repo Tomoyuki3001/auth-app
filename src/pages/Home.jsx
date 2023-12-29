@@ -14,24 +14,21 @@ import { Table } from "./Table";
 
 const Home = ({ userId }) => {
   const navigate = useNavigate();
-  const [calculatedData, setCalculatedData] = useState();
   const user = JSON.parse(localStorage.getItem("user"));
+  const [calculatedData, setCalculatedData] = useState(0);
   const [array, setArray] = useState([]);
   const [total, setTotal] = useState();
-
-  let date = new Date();
-  let newDate = date.toDateString().substring(4);
+  let nowDate = new Date();
 
   const deposit = async () => {
     try {
       const docRef = await addDoc(collection(db, "numbers"), {
+        date: nowDate.getTime(),
         email: user.email,
-        number: calculatedData,
-        date: newDate,
+        amount: calculatedData * 1,
         status: "Deposit",
       });
       setCalculatedData("");
-      console.log("Document written with ID: ", docRef.id);
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -40,13 +37,12 @@ const Home = ({ userId }) => {
   const withdraw = async () => {
     try {
       const docRef = await addDoc(collection(db, "numbers"), {
+        date: nowDate.getTime(),
         email: user.email,
-        number: calculatedData * -1,
-        date: newDate,
+        amount: calculatedData * -1,
         status: "Withdraw",
       });
       setCalculatedData("");
-      console.log("Document written with ID: ", docRef.id);
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -72,12 +68,12 @@ const Home = ({ userId }) => {
       });
       let numArray = [];
       empArray.map((obj) => {
-        numArray.push(parseInt(obj.number));
+        numArray.push(parseInt(obj.amount));
       });
       let sum = 0;
       numArray.forEach((el) => (sum += el));
       setTotal(sum);
-      setArray(empArray);
+      setArray(empArray.sort((a, b) => a.date - b.date).reverse());
     });
     return () => {
       unsubscribe();

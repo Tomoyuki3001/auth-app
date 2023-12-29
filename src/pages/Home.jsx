@@ -52,6 +52,16 @@ const Home = ({ userId }) => {
     await deleteDoc(doc(db, "numbers", id));
   };
 
+  const arrayWithEmail = (array) => {
+    let emailArray = [];
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].email === user.email) {
+        emailArray.push(array[i]);
+      }
+    }
+    return emailArray;
+  };
+
   const handleLogout = async () => {
     await signOut(auth);
     localStorage.removeItem("token");
@@ -66,14 +76,15 @@ const Home = ({ userId }) => {
       await querySnapshot.forEach((doc) => {
         empArray.push({ ...doc.data(), id: doc.id });
       });
+      let userArray = arrayWithEmail(empArray);
       let numArray = [];
-      empArray.map((obj) => {
+      userArray.map((obj) => {
         numArray.push(parseInt(obj.amount));
       });
       let sum = 0;
       numArray.forEach((el) => (sum += el));
       setTotal(sum);
-      setArray(empArray.sort((a, b) => a.date - b.date).reverse());
+      setArray(userArray.sort((a, b) => a.date - b.date).reverse());
     });
     return () => {
       unsubscribe();
@@ -82,9 +93,7 @@ const Home = ({ userId }) => {
 
   return (
     <div className="container">
-      <h1>
-        Hello {user.email} ! <br /> This is a home page of this auth app!
-      </h1>
+      <h1>Hello {user.email} !</h1>
       <div>
         <label>Amount:</label>
         <input

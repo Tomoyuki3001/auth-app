@@ -1,10 +1,13 @@
 import React from "react";
 
-export const Table = ({ email, number }) => {
+export const Table = ({ item, deleteNumber, date }) => {
   return (
     <tr>
-      <td>Email:{email}</td>
-      <td>Number:{number}</td>
+      <td>{item.date}</td>
+      <td>{item.number}</td>
+      <td>
+        <button onClick={() => deleteNumber(item.id)}>Remove</button>
+      </td>
     </tr>
   );
 };

@@ -55,6 +55,8 @@ const Home = ({ userId }) => {
   const arrayWithEmail = (array) => {
     let emailArray = [];
     for (let i = 0; i < array.length; i++) {
+      console.log("array", array);
+      console.log("user", user);
       if (array[i].email === user.email) {
         emailArray.push(array[i]);
       }

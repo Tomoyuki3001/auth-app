@@ -14,22 +14,38 @@ import { Table } from "./Table";
 
 const Home = ({ userId }) => {
   const navigate = useNavigate();
-  const [calculatedData, setCalculatedData] = useState(0);
+  const [calculatedData, setCalculatedData] = useState();
   const user = JSON.parse(localStorage.getItem("user"));
   const [array, setArray] = useState([]);
-  const [total, setTotal] = useState(0);
-  // const [numArray, setNumArray] = useState([]);
+  const [total, setTotal] = useState();
 
   let date = new Date();
   let newDate = date.toDateString().substring(4);
 
-  const saveData = async () => {
+  const deposit = async () => {
     try {
       const docRef = await addDoc(collection(db, "numbers"), {
         email: user.email,
         number: calculatedData,
         date: newDate,
+        status: "Deposit",
       });
+      setCalculatedData("");
+      console.log("Document written with ID: ", docRef.id);
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+  };
+
+  const withdraw = async () => {
+    try {
+      const docRef = await addDoc(collection(db, "numbers"), {
+        email: user.email,
+        number: calculatedData * -1,
+        date: newDate,
+        status: "Withdraw",
+      });
+      setCalculatedData("");
       console.log("Document written with ID: ", docRef.id);
     } catch (error) {
       console.error("Error adding document: ", error);
@@ -74,13 +90,14 @@ const Home = ({ userId }) => {
         Hello {user.email} ! <br /> This is a home page of this auth app!
       </h1>
       <div>
-        <label>Put a number:</label>
+        <label>Amount:</label>
         <input
           type="number"
           value={calculatedData}
           onChange={(e) => setCalculatedData(e.target.value)}
         />
-        <button onClick={saveData}>Add</button>
+        <button onClick={deposit}>Deposit</button>
+        <button onClick={withdraw}>Withdraw</button>
       </div>
       <div>
         <p>Total: {total}</p>
@@ -89,7 +106,8 @@ const Home = ({ userId }) => {
         <thead>
           <tr>
             <th>Date</th>
-            <th>Number</th>
+            <th>Status</th>
+            <th>Amount</th>
           </tr>
         </thead>
         <tbody>

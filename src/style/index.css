@@ -1,6 +1,6 @@
 body {
-  background-color: #c8c9cc;
-  color: #000000;
+  background-color: #14141f;
+  color: #c8c9cc;
   font-family: Arial;
   display: flex;
   height: 100vh;
@@ -9,10 +9,7 @@ body {
   text-align: center;
   align-items: center;
   margin: 0;
-}
-
-p {
-  font-size: 1.5em;
+  padding: 0;
 }
 
 .container {
@@ -21,4 +18,11 @@ p {
   justify-content: center;
   text-align: center;
   align-items: center;
+  padding: 0% 15%;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

@@ -1,4 +1,5 @@
 import { signOut } from "firebase/auth";
+import "../style/home.css";
 import React, { useEffect, useState } from "react";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
@@ -12,10 +13,10 @@ import {
 } from "firebase/firestore";
 import { Table } from "./Table";
 
-const Home = ({ userId }) => {
+const Home = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
-  const [calculatedData, setCalculatedData] = useState(0);
+  const [calculatedData, setCalculatedData] = useState();
   const [array, setArray] = useState([]);
   const [total, setTotal] = useState();
   let nowDate = new Date();
@@ -55,8 +56,6 @@ const Home = ({ userId }) => {
   const arrayWithEmail = (array) => {
     let emailArray = [];
     for (let i = 0; i < array.length; i++) {
-      console.log("array", array);
-      console.log("user", user);
       if (array[i].email === user.email) {
         emailArray.push(array[i]);
       }
@@ -95,20 +94,25 @@ const Home = ({ userId }) => {
 
   return (
     <div className="container">
-      <h1>Hello {user.email} !</h1>
-      <div>
-        <label>Amount:</label>
+      <h1 className="home-header">Hello {user.email} !</h1>
+      <div className="home-amount-container">
         <input
           type="number"
           value={calculatedData}
+          className="home-amount"
+          placeholder="Amount"
           onChange={(e) => setCalculatedData(e.target.value)}
         />
-        <button onClick={deposit}>Deposit</button>
-        <button onClick={withdraw}>Withdraw</button>
+        <div className="home-button-container">
+          <button onClick={deposit} className="home-deposit">
+            Deposit
+          </button>
+          <button onClick={withdraw} className="home-withdraw">
+            Withdraw
+          </button>
+        </div>
       </div>
-      <div>
-        <p>Total: {total}</p>
-      </div>
+      <h2>Total: ${total}</h2>
       <table>
         <thead>
           <tr>

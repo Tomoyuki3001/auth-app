@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "../style/signup.css";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
+} from "firebase/auth";
 import { auth } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -13,19 +16,37 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (password.length < 6) {
+      alert("Length must be atleast 6 characters.");
+      setPassword("");
+      setRePassword("");
+    }
     if (password === rePassword) {
-      try {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-        const user = userCredential.user;
-        localStorage.setItem("token", user.accessToken);
-        localStorage.setItem("user", JSON.stringify(user));
-        navigate("/");
-      } catch (error) {}
+      fetchSignInMethodsForEmail(auth, email)
+        .then((result) => {
+          if (result) {
+            alert("Email address already exists.");
+            setEmail("");
+            setPassword("");
+            setRePassword("");
+          } else {
+            try {
+              const userCredential = createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+              );
+              const user = userCredential.user;
+              localStorage.setItem("token", user.accessToken);
+              localStorage.setItem("user", JSON.stringify(user));
+              navigate("/");
+            } catch (error) {}
+          }
+        })
+        .catch((error) => {
+          // Handle errors
+          console.error("Error checking email existence:", error);
+        });
     } else {
       alert("Please type same password");
     }
@@ -37,7 +58,7 @@ const Signup = () => {
       <form onSubmit={handleSubmit} className="signup-form">
         <input
           type="email"
-          placeholder="Your email"
+          placeholder="Email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -45,7 +66,7 @@ const Signup = () => {
         />
         <input
           type="password"
-          placeholder="Your password"
+          placeholder="Password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}

@@ -93,7 +93,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="home-container">
       <h1 className="home-header">Hello {user.email} !</h1>
       <div className="home-amount-container">
         <input
@@ -112,7 +112,7 @@ const Home = () => {
           </button>
         </div>
       </div>
-      <h2>Total: ${total}</h2>
+      <h2 className="home-total">Total: ${total}</h2>
       <table>
         <thead>
           <tr>

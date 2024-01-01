@@ -36,16 +36,21 @@ const Home = () => {
   };
 
   const withdraw = async () => {
-    try {
-      const docRef = await addDoc(collection(db, "numbers"), {
-        date: nowDate.getTime(),
-        email: user.email,
-        amount: calculatedData * -1,
-        status: "Withdraw",
-      });
+    if (total <= 0 || calculatedData > total || calculatedData === 0) {
+      alert("Amount Error");
       setCalculatedData("");
-    } catch (error) {
-      console.error("Error adding document: ", error);
+    } else {
+      try {
+        const docRef = await addDoc(collection(db, "numbers"), {
+          date: nowDate.getTime(),
+          email: user.email,
+          amount: calculatedData * -1,
+          status: "Withdraw",
+        });
+        setCalculatedData();
+      } catch (error) {
+        console.error("Error adding document: ", error);
+      }
     }
   };
 
@@ -95,6 +100,9 @@ const Home = () => {
   return (
     <div className="home-container">
       <h1 className="home-header">Hello {user.email} !</h1>
+      <h2 className="home-header2">
+        Use this secret account to build your financial freedom fund!
+      </h2>
       <div className="home-amount-container">
         <input
           type="number"

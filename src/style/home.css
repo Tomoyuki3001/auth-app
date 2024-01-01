@@ -109,24 +109,6 @@ td {
   padding: 0.5rem 0;
 }
 
-@media only screen and (max-width: 767px) {
-  table {
-    width: 100%;
-    table-layout: auto;
-    margin-bottom: 1rem;
-    font-size: 0.5em;
-  }
-  th {
-    padding: 0.5rem 1rem;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1em;
-    color: #fff;
-    text-transform: uppercase;
-    background-color: rgb(255, 255, 255, 0.1);
-  }
-}
-
 .td-button {
   border: none;
   font-size: 0.7em;
@@ -156,4 +138,47 @@ td {
 .td-button-remove:hover {
   color: #14141f;
   background-color: #c8c9cc;
+}
+
+@media only screen and (max-width: 767px) {
+  table {
+    width: 100%;
+    table-layout: auto;
+    margin-bottom: 1rem;
+    font-size: 0.7em;
+  }
+  th {
+    padding: 0.5rem 1rem;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1em;
+    color: #fff;
+    text-transform: uppercase;
+    background-color: rgb(255, 255, 255, 0.1);
+  }
+  .td-button {
+    border: none;
+    font-size: 0.5em;
+  }
+  .td-button-remove {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-size: 1em;
+    line-height: 1;
+    border-radius: 10px;
+    transition-property: background-color, border-color, color, box-shadow,
+      filter;
+    transition-duration: 0.3s;
+    border: 1px solid transparent;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: normal;
+    font-weight: 700;
+    text-align: center;
+    color: #c8c9cc;
+    box-shadow: inset 0 0 0 2px #c8c9cc;
+    background-color: transparent;
+    padding: 0.8rem 1rem;
+  }
 }
